@@ -92,7 +92,6 @@ class Message(Base):
         nullable=False
     )
 
-    # Связь с таблицей Users
     sender = relationship(
         'User',
         foreign_keys=[sender_id],

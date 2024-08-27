@@ -1,5 +1,6 @@
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Any
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 
@@ -28,3 +29,21 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         yield session
     finally:
         await session.close()
+
+
+
+async def get_object(
+        db: AsyncSession,
+        obj: Base,
+        by_field: str,
+        search_value: str | int | float | bool
+) -> Base:
+    query = await db.execute(
+        select(obj)
+        .where(
+            getattr(obj, by_field) == search_value
+        )
+    )
+    db_object = query.scalar()
+    return db_object
+

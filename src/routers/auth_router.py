@@ -15,7 +15,7 @@ auth_router = APIRouter(
     prefix='/auth'
 )
 
-@auth_router.post('/login/')
+@auth_router.post('/login/', name='user_login')
 async def user_login(
     user: UserLogin,
     db: Annotated[
@@ -26,7 +26,7 @@ async def user_login(
     """Авторизация и получение токена"""
     return await user_login_service(user, db)
 
-@auth_router.post('/register/')
+@auth_router.post('/register/', name='user_register')
 async def user_register(
     user: UserRegister,
     db: Annotated[
@@ -40,7 +40,7 @@ async def user_register(
         db
     )
 
-@auth_router.get('/users/', response_model=list[UserRegister])
+@auth_router.get('/users/', response_model=list[UserRegister], name='user_list')
 async def get_user_list(
         db: Annotated[
             AsyncSession,

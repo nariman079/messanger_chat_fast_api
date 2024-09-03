@@ -12,3 +12,11 @@ async def get_user(db: AsyncSession, email: str):
         search_value=email
     )
 
+async def get_user_by_id(db: AsyncSession, id: int):
+    return await get_object(
+        db=db,
+        obj=User,
+        by_field='id',
+        search_value=id
+    )
+

@@ -60,4 +60,28 @@ async def test_authenticate_and_get_data(client):
         url,
         headers=headers
     )
-    assert response.json()[0]['name'] == 1
+    assert response.json()[0]['name'] == 'test'
+
+@pytest.mark.asyncio
+async def test_added_friend(client):
+    url = client.app.url_path_for('user_login')
+    login_user_data = dict(
+        password="test",
+        email='emial@mail.ru'
+    )
+    response = client.post(
+        url,
+        json=login_user_data
+    )
+    token = response.json()['token']
+    headers = {
+        'Authorization': f"Bearer {token}"
+    }
+    url = client.app.url_path_for('add_friend', friend_id=1)
+    response = client.post(
+        url,
+
+        headers=headers
+    )
+
+    assert response.json() == 1
